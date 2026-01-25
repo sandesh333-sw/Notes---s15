@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 
 const NotesClient = ({initialNotes}) => {
     const [notes, setNotes] = useState(initialNotes);
@@ -23,6 +24,7 @@ const NotesClient = ({initialNotes}) => {
             //console.log(result);
             if(result.success){
                 setNotes([result.data, ...notes]);
+                toast.success("Notes created successfully");
                 setTitle("");
                 setContent("");
             }
@@ -30,6 +32,7 @@ const NotesClient = ({initialNotes}) => {
 
         } catch (error) {
             console.error("Error creating error", error);
+            toast.error("Something went wrong");
         }
     }
     return (
