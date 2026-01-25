@@ -23,7 +23,6 @@ const NoteSchema = new Schema({
 
 NoteSchema.pre("save", function(next) {
     this.updatedAt = Date.now();
-    next();
 });
 
 export default mongoose.models.Note || mongoose.model("Note", NoteSchema);
