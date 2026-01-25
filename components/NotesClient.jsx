@@ -1,7 +1,8 @@
 "use client"
 import React, { useState } from 'react'
 
-const NotesClient = () => {
+const NotesClient = ({initialNotes}) => {
+    const [notes, setNotes] = useState(initialNotes);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false);
@@ -19,7 +20,12 @@ const NotesClient = () => {
             });
 
             const result = await response.json();
-            console.log(result);
+            //console.log(result);
+            if(result.success){
+                setNotes([result.data, ...notes]);
+                setTitle("");
+                setContent("");
+            }
             setLoading(false);
 
         } catch (error) {
@@ -58,6 +64,31 @@ const NotesClient = () => {
                     </button>
                 </div>
             </form>
+
+            <div className='space-y-4 '>
+                <h2 className='text-xl font-semibold'>Your notes ({notes.length})</h2>
+                {
+                    notes.length === 0 ? (<p>No Notes yet, Create your first Notes</p>): (
+                        notes.map((note) => (
+                            <div key={note._id} className='shadow-md rounded-lg'>
+                                <div className='flex justify-between items-start mb-2'>
+                                    <h3>{note.title}</h3>
+                                    <div className='flex gap-2'>
+                                        <button className='text-blue-200 hover:text-blue-600 text-sm'>
+                                            Edit
+                                        </button>
+
+                                        <button className='text-red-300 hover:text-red-400 text-sm'>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                <p className='text-gray-400 mb-2'>{note.content}</p>
+                            </div>
+                        ))
+                    )
+                }
+            </div>
         </div>
 
     )
